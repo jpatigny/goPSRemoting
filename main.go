@@ -33,9 +33,9 @@ func RunPowershellCommand(username string, password string, server string, comma
         } else {
 		// winrm
 		switch authentication {
-			case kerberos:
+			case "kerberos":
 					winRMPre = "$s = New-PSSession -ComputerName " + server +""
-			case negociate:
+			case "negociate":
 					winRMPre = `$SecurePassword = '" + password + "' | ConvertTo-SecureString -AsPlainText -Force
 					$cred = New-Object System.Management.Automation.PSCredential -ArgumentList '" + username + "', $SecurePassword
 					$s = New-PSSession -ComputerName " + server + " -Credential $cred`
