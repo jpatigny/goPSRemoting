@@ -38,6 +38,7 @@ func RunPowershellCommand(username string, password string, server string, comma
 		if authentication == "negociate" {
 			log.Printf("Authentication detected: Negociate")
 			winRMPre = "$SecurePassword = '" + password + "' | ConvertTo-SecureString -AsPlainText -Force; $cred = New-Object System.Management.Automation.PSCredential -ArgumentList '" + username + "', $SecurePassword; $s = New-PSSession -Authentication Negotiate -ComputerName " + server + " -Credential $cred"
+			log.Printf("WinRMPre command: %v",winRMPre)
 		}
 	}
 	var winRMPost string
@@ -46,12 +47,17 @@ func RunPowershellCommand(username string, password string, server string, comma
 	} else {
 		winRMPost = "; Invoke-Command -Session $s -Scriptblock { powershell '" + command + "' }; Remove-PSSession $s"
 	}
+	
+	log.Printf("WinRMPost command: %v",winRMPost)
 	var winRMCommand string
 	if usessl == "1" {
 		winRMCommand = winRMPre + " -UseSSL" + winRMPost
 	} else {
 		winRMCommand = winRMPre + winRMPost
 	}
+	
+	log.Printf("WinRMCommand: %v",winRMCommand)
+	
 	out, err := runCommand(pscommand, "-command", winRMCommand)
 	return out, err
 }
