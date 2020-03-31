@@ -1,5 +1,6 @@
 package goPSRemoting 
 import (
+	"log"
         "os/exec"
         "bytes"
         "runtime"
@@ -23,6 +24,7 @@ func runCommand(args ...string) (string, error) {
 func RunPowershellCommand(username string, password string, server string, command string, usessl string, usessh string, authentication string) (string, error) {
         var pscommand string
         if runtime.GOOS == "windows" {
+		log.Printf("windows host detected")
                 pscommand = "powershell.exe -ExecutionPolicy ByPass"
         } else {
                 pscommand = "pwsh"
