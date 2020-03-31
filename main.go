@@ -59,6 +59,8 @@ func RunPowershellCommand(username string, password string, server string, comma
         } else {
                 winRMCommand = winRMPre + winRMPost
         }
+	
+	log.Printf("winrm command to execute: %v", winRMCommand)
         out, err := runCommand(pscommand, "-command", winRMCommand) 
         return out, err
 }
